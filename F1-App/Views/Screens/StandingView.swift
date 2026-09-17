@@ -1,0 +1,134 @@
+//
+//  StandingsView.swift
+//  F1-App
+//
+//  Created by Vincen Sanjaya on 17/09/26.
+//
+
+import SwiftUI
+
+struct StandingsView: View {
+    // State untuk mendeteksi tab mana yang sedang dipilih (0 = Drivers, 1 = Constructors)
+    @State private var selectedTab = 0
+    
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 0) {
+                // 1. Segmented Picker (Tombol Geser)
+                Picker("Standings Type", selection: $selectedTab) {
+                    Text("Drivers").tag(0)
+                    Text("Constructors").tag(1)
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding(.horizontal)
+                .padding(.vertical, 10)
+                
+                // 2. Daftar Klasemen
+                ScrollView {
+                    VStack(spacing: 12) {
+                        if selectedTab == 0 {
+                            DriversStandingsList()
+                        } else {
+                            ConstructorsStandingsList()
+                        }
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, 10)
+                    .padding(.bottom, 30)
+                }
+            }
+            .background(Color(white: 0.1).ignoresSafeArea())
+            .navigationTitle("Standings")
+            .preferredColorScheme(.dark)
+        }
+    }
+}
+
+// MARK: - Daftar Pembalap
+struct DriversStandingsList: View {
+    var body: some View {
+        VStack(spacing: 0) {
+            FullStandingRow(pos: 1, name: "Max VERSTAPPEN", sub: "Red Bull", pts: "393", color: .blue)
+            Divider().background(Color.white.opacity(0.1))
+            FullStandingRow(pos: 2, name: "Lando NORRIS", sub: "McLaren", pts: "331", color: .orange)
+            Divider().background(Color.white.opacity(0.1))
+            FullStandingRow(pos: 3, name: "Charles LECLERC", sub: "Ferrari", pts: "300", color: .red)
+            Divider().background(Color.white.opacity(0.1))
+            FullStandingRow(pos: 4, name: "Oscar PIASTRI", sub: "McLaren", pts: "237", color: .orange)
+            Divider().background(Color.white.opacity(0.1))
+            FullStandingRow(pos: 5, name: "Carlos SAINZ", sub: "Ferrari", pts: "234", color: .red)
+        }
+        .background(Color(white: 0.15))
+        .cornerRadius(15)
+    }
+}
+
+// MARK: - Daftar Konstruktor (Tim)
+struct ConstructorsStandingsList: View {
+    var body: some View {
+        VStack(spacing: 0) {
+            FullStandingRow(pos: 1, name: "McLaren", sub: "Mercedes", pts: "568", color: .orange)
+            Divider().background(Color.white.opacity(0.1))
+            FullStandingRow(pos: 2, name: "Red Bull Racing", sub: "Honda RBPT", pts: "544", color: .blue)
+            Divider().background(Color.white.opacity(0.1))
+            FullStandingRow(pos: 3, name: "Ferrari", sub: "Ferrari", pts: "534", color: .red)
+            Divider().background(Color.white.opacity(0.1))
+            FullStandingRow(pos: 4, name: "Mercedes", sub: "Mercedes", pts: "344", color: .teal)
+        }
+        .background(Color(white: 0.15))
+        .cornerRadius(15)
+    }
+}
+
+// MARK: - Komponen Baris Universal
+struct FullStandingRow: View {
+    let pos: Int
+    let name: String
+    let sub: String
+    let pts: String
+    let color: Color
+    
+    var body: some View {
+        HStack(spacing: 15) {
+            Text("\(pos)")
+                .font(.title3)
+                .fontWeight(.black)
+                .foregroundColor(.white)
+                .frame(width: 30)
+            
+            Rectangle()
+                .fill(color)
+                .frame(width: 4, height: 35)
+                .cornerRadius(2)
+            
+            VStack(alignment: .leading, spacing: 2) {
+                Text(name)
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                
+                Text(sub)
+                    .font(.caption)
+                    .foregroundColor(.gray)
+            }
+            
+            Spacer()
+            
+            Text(pts)
+                .font(.title3)
+                .fontWeight(.black)
+                .foregroundColor(.white)
+            
+            Text("PTS")
+                .font(.caption2)
+                .foregroundColor(.gray)
+                .padding(.top, 4)
+        }
+        .padding(.vertical, 12)
+        .padding(.horizontal, 16)
+    }
+}
+
+#Preview {
+    StandingsView()
+}
