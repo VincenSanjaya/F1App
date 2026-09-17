@@ -4,13 +4,15 @@
 //
 //  Created by Vincen Sanjaya on 14/09/26.
 //
+
 import SwiftUI
 
 @main
-struct F1App: App {
+struct F1_AppApp: App {
     var body: some Scene {
         WindowGroup {
-            ChooseFavoritesView()
+            ContentView()
+                .preferredColorScheme(.dark)
         }
     }
 }

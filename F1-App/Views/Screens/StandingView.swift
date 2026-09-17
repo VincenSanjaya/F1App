@@ -48,15 +48,24 @@ struct StandingsView: View {
 struct DriversStandingsList: View {
     var body: some View {
         VStack(spacing: 0) {
-            FullStandingRow(pos: 1, name: "Max VERSTAPPEN", sub: "Red Bull", pts: "393", color: .blue)
+            NavigationLink(destination: DriverDetailView()) {
+                FullStandingRow(pos: 1, name: "Max VERSTAPPEN", sub: "Red Bull", pts: "393", color: .blue)
+            }
+            .buttonStyle(PlainButtonStyle())
+            
             Divider().background(Color.white.opacity(0.1))
-            FullStandingRow(pos: 2, name: "Lando NORRIS", sub: "McLaren", pts: "331", color: .orange)
+            
+            NavigationLink(destination: DriverDetailView()) {
+                FullStandingRow(pos: 2, name: "Lando NORRIS", sub: "McLaren", pts: "331", color: .orange)
+            }
+            .buttonStyle(PlainButtonStyle())
+            
             Divider().background(Color.white.opacity(0.1))
-            FullStandingRow(pos: 3, name: "Charles LECLERC", sub: "Ferrari", pts: "300", color: .red)
-            Divider().background(Color.white.opacity(0.1))
-            FullStandingRow(pos: 4, name: "Oscar PIASTRI", sub: "McLaren", pts: "237", color: .orange)
-            Divider().background(Color.white.opacity(0.1))
-            FullStandingRow(pos: 5, name: "Carlos SAINZ", sub: "Ferrari", pts: "234", color: .red)
+            
+            NavigationLink(destination: DriverDetailView()) {
+                FullStandingRow(pos: 3, name: "Charles LECLERC", sub: "Ferrari", pts: "300", color: .red)
+            }
+            .buttonStyle(PlainButtonStyle())
         }
         .background(Color(white: 0.15))
         .cornerRadius(15)
@@ -67,13 +76,34 @@ struct DriversStandingsList: View {
 struct ConstructorsStandingsList: View {
     var body: some View {
         VStack(spacing: 0) {
-            FullStandingRow(pos: 1, name: "McLaren", sub: "Mercedes", pts: "568", color: .orange)
+            // Pemanggilan TeamDetailView sekarang menggunakan format inisialisasi Constructor yang lengkap
+            NavigationLink(destination: TeamDetailView(
+                team: Constructor(id: "mclaren", name: "McLaren", fullName: "McLaren F1 Team", themeColor: .orange, flag: "uk_flag", carImageName: "mclaren_car"),
+                drivers: [] // Array kosong sementara agar tidak error. Nantinya diisi dengan data Driver sungguhan.
+            )) {
+                FullStandingRow(pos: 1, name: "McLaren", sub: "Mercedes", pts: "568", color: .orange)
+            }
+            .buttonStyle(PlainButtonStyle())
+            
             Divider().background(Color.white.opacity(0.1))
-            FullStandingRow(pos: 2, name: "Red Bull Racing", sub: "Honda RBPT", pts: "544", color: .blue)
+            
+            NavigationLink(destination: TeamDetailView(
+                team: Constructor(id: "redbull", name: "Red Bull Racing", fullName: "Oracle Red Bull Racing", themeColor: .blue, flag: "austria_flag", carImageName: "redbull_car"),
+                drivers: []
+            )) {
+                FullStandingRow(pos: 2, name: "Red Bull Racing", sub: "Honda RBPT", pts: "544", color: .blue)
+            }
+            .buttonStyle(PlainButtonStyle())
+            
             Divider().background(Color.white.opacity(0.1))
-            FullStandingRow(pos: 3, name: "Ferrari", sub: "Ferrari", pts: "534", color: .red)
-            Divider().background(Color.white.opacity(0.1))
-            FullStandingRow(pos: 4, name: "Mercedes", sub: "Mercedes", pts: "344", color: .teal)
+            
+            NavigationLink(destination: TeamDetailView(
+                team: Constructor(id: "ferrari", name: "Ferrari", fullName: "Scuderia Ferrari", themeColor: .red, flag: "italy_flag", carImageName: "ferrari_car"),
+                drivers: []
+            )) {
+                FullStandingRow(pos: 3, name: "Ferrari", sub: "Ferrari", pts: "534", color: .red)
+            }
+            .buttonStyle(PlainButtonStyle())
         }
         .background(Color(white: 0.15))
         .cornerRadius(15)
@@ -126,6 +156,7 @@ struct FullStandingRow: View {
         }
         .padding(.vertical, 12)
         .padding(.horizontal, 16)
+        .background(Color.white.opacity(0.001))
     }
 }
 

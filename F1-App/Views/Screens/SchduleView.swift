@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import SwiftUI
+
 struct ScheduleView: View {
     var body: some View {
         NavigationStack {
@@ -21,45 +23,60 @@ struct ScheduleView: View {
                         .padding(.top, 10)
                         .padding(.horizontal)
                     
-                    RaceCardView(
-                        round: "ROUND 15",
-                        date: "20-22\nOCT",
-                        flag: "🇺🇸",
-                        country: "United States",
-                        track: "Circuit of The Americas",
-                        isNextRace: true
-                    )
+                    // Round 15
+                    NavigationLink(destination: TrackDetailView()) {
+                        RaceCardView(
+                            round: "ROUND 15",
+                            date: "20-22\nOCT",
+                            flag: "🇺🇸",
+                            country: "United States",
+                            track: "Circuit of The Americas",
+                            isNextRace: true
+                        )
+                    }
+                    .buttonStyle(PlainButtonStyle())
                     .padding(.horizontal)
                     
-                    // Sisa Balapan Musim Ini
-                    RaceCardView(
-                        round: "ROUND 16",
-                        date: "27-29\nOCT",
-                        flag: "🇲🇽",
-                        country: "Mexico",
-                        track: "Autódromo Hermanos Rodríguez",
-                        isNextRace: false
-                    )
+                    // Sisa Balapan Musim Ini - Round 16
+                    NavigationLink(destination: TrackDetailView()) {
+                        RaceCardView(
+                            round: "ROUND 16",
+                            date: "27-29\nOCT",
+                            flag: "🇲🇽",
+                            country: "Mexico",
+                            track: "Autódromo Hermanos Rodríguez",
+                            isNextRace: false
+                        )
+                    }
+                    .buttonStyle(PlainButtonStyle())
                     .padding(.horizontal)
                     
-                    RaceCardView(
-                        round: "ROUND 17",
-                        date: "03-05\nNOV",
-                        flag: "🇧🇷",
-                        country: "Brazil",
-                        track: "Autódromo José Carlos Pace",
-                        isNextRace: false
-                    )
+                    // Round 17
+                    NavigationLink(destination: TrackDetailView()) {
+                        RaceCardView(
+                            round: "ROUND 17",
+                            date: "03-05\nNOV",
+                            flag: "🇧🇷",
+                            country: "Brazil",
+                            track: "Autódromo José Carlos Pace",
+                            isNextRace: false
+                        )
+                    }
+                    .buttonStyle(PlainButtonStyle())
                     .padding(.horizontal)
                     
-                    RaceCardView(
-                        round: "ROUND 18",
-                        date: "16-18\nNOV",
-                        flag: "🇺🇸",
-                        country: "Las Vegas",
-                        track: "Las Vegas Strip Circuit",
-                        isNextRace: false
-                    )
+                    // Round 18
+                    NavigationLink(destination: TrackDetailView()) {
+                        RaceCardView(
+                            round: "ROUND 18",
+                            date: "16-18\nNOV",
+                            flag: "🇺🇸",
+                            country: "Las Vegas",
+                            track: "Las Vegas Strip Circuit",
+                            isNextRace: false
+                        )
+                    }
+                    .buttonStyle(PlainButtonStyle())
                     .padding(.horizontal)
                     
                     Spacer(minLength: 40)
@@ -70,6 +87,10 @@ struct ScheduleView: View {
             .preferredColorScheme(.dark)
         }
     }
+}
+
+#Preview {
+    ScheduleView()
 }
 
 // MARK: - Komponen Kartu Balapan
