@@ -8,16 +8,32 @@
 import Foundation
 
 struct Driver: Identifiable, Codable {
-    let id = UUID() // ID lokal untuk SwiftUI
-    let driverNumber: Int?
-    let fullName: String?
-    let nameAcronym: String? // Singkatan nama, misal VER, HAM
-    let teamName: String?
-    let teamColour: String?
-    let headshotUrl: String?
-    let countryCode: String?
+    var id = UUID()
+    var driverNumber: Int?
+    var fullName: String?
+    var nameAcronym: String?
+    var teamName: String?
+    var teamColour: String?
+    var headshotUrl: String?
+    var countryCode: String?
     
-    // Ini jembatan antara nama dari API OpenF1 ke variabel Swift kita
+    init(driverNumber: Int? = nil,
+         fullName: String? = nil,
+         nameAcronym: String? = nil,
+         teamName: String? = nil,
+         teamColour: String? = nil,
+         headshotUrl: String? = nil,
+         countryCode: String? = nil) {
+        
+        self.driverNumber = driverNumber
+        self.fullName = fullName
+        self.nameAcronym = nameAcronym
+        self.teamName = teamName
+        self.teamColour = teamColour
+        self.headshotUrl = headshotUrl
+        self.countryCode = countryCode
+    }
+
     enum CodingKeys: String, CodingKey {
         case driverNumber = "driver_number"
         case fullName = "full_name"

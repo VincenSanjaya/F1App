@@ -11,10 +11,11 @@ struct TeamsView: View {
     // Memanggil "pelayan" yang akan menarik data dari API
     @StateObject private var viewModel = DriversViewModel()
     
+    // PERBAIKAN 1: Posisi carImageName ditaruh SEBELUM flag
     let teams = [
-        Constructor(id: "ferrari", name: "Ferrari", fullName: "Scuderia Ferrari HP", themeColor: Color.red, flag: "🇮🇹", carImageName: "ferrari_car"),
-        Constructor(id: "mclaren", name: "McLaren", fullName: "McLaren F1 Team", themeColor: Color.orange, flag: "🇬🇧", carImageName: "mclaren_car"),
-        Constructor(id: "mercedes", name: "Mercedes", fullName: "Mercedes-AMG Petronas", themeColor: Color.teal, flag: "🇩🇪", carImageName: "mercedes_car")
+        Constructor(id: "ferrari", name: "Ferrari", fullName: "Scuderia Ferrari HP", themeColor: Color.red, carImageName: "ferrari_car", flag: "🇮🇹"),
+        Constructor(id: "mclaren", name: "McLaren", fullName: "McLaren F1 Team", themeColor: Color.orange, carImageName: "mclaren_car", flag: "🇬🇧"),
+        Constructor(id: "mercedes", name: "Mercedes", fullName: "Mercedes-AMG Petronas", themeColor: Color.teal, carImageName: "mercedes_car", flag: "🇩🇪")
     ]
     
     var body: some View {
@@ -38,15 +39,16 @@ struct TeamsView: View {
                     ScrollView {
                         LazyVStack(spacing: 20) {
                             ForEach(teams) { team in
-                                // LOGIKA PINTAR: Menyaring 2 pembalap milik tim ini
+                                // PERBAIKAN 2 & 3: Ekstrak teks opsional menjadi teks pasti (String)
                                 let teamDrivers = viewModel.drivers.filter { driver in
-                                    driver.teamName?.localizedCaseInsensitiveContains(team.name) ?? false
+                                    let safeTeamName = team.name ?? ""
+                                    return driver.teamName?.localizedCaseInsensitiveContains(safeTeamName) ?? false
                                 }
                                 
                                 // MEMBUNGKUS KARTU DENGAN TOMBOL NAVIGASI
                                 NavigationLink {
                                     // Tujuan saat diklik:
-                                    TeamDetailView(team: team, drivers: teamDrivers)
+                                    TeamDetailView(team: team)
                                 } label: {
                                     // Tampilan kartunya:
                                     TeamCardView(team: team, drivers: teamDrivers)

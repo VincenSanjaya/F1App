@@ -62,7 +62,17 @@ struct NextRaceCard: View {
                 .frame(height: 220)
                 .shadow(color: .red.opacity(0.3), radius: 10, x: 0, y: 5)
             
-            // Ornamen Garis Estetik (Opsional)
+            // Gambar Siluet Sirkuit (Elemen Baru)
+            Image("cota_circuit") // Ganti dengan nama file sirkuit di Assets
+                .resizable()
+                .scaledToFit()
+                .frame(height: 160)
+                .padding(.bottom, 20)
+                .padding(.trailing, -20)
+                .opacity(0.25)
+                .frame(maxWidth: .infinity, alignment: .trailing) // Mendorong gambar sirkuit ke kanan
+            
+            // Ornamen Garis Estetik
             RoundedRectangle(cornerRadius: 20)
                 .stroke(Color.white.opacity(0.2), lineWidth: 1)
             

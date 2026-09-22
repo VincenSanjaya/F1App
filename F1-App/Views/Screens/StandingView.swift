@@ -48,22 +48,52 @@ struct StandingsView: View {
 struct DriversStandingsList: View {
     var body: some View {
         VStack(spacing: 0) {
-            NavigationLink(destination: DriverDetailView()) {
-                FullStandingRow(pos: 1, name: "Max VERSTAPPEN", sub: "Red Bull", pts: "393", color: .blue)
+            // VERSTAPPEN
+            NavigationLink(destination: DriverDetailView(
+                driver: Driver(
+                    driverNumber: 4,
+                    fullName: "Lando Norris",
+                    teamName: "McLaren",
+                    countryCode: "GBR"
+                ),
+                teamColor: .orange
+            )) {
+                // Asumsi ini nama komponen baris klasemen pembalapmu
+                FullStandingRow(pos: 1, name: "Lando NORRIS", sub: "McLaren", pts: "279", color: .orange)
             }
             .buttonStyle(PlainButtonStyle())
             
             Divider().background(Color.white.opacity(0.1))
             
-            NavigationLink(destination: DriverDetailView()) {
-                FullStandingRow(pos: 2, name: "Lando NORRIS", sub: "McLaren", pts: "331", color: .orange)
+            // NORRIS
+            NavigationLink(destination: DriverDetailView(
+                driver: Driver(
+                    driverNumber: 4,
+                    fullName: "Lando Norris",
+                    teamName: "McLaren",
+                    countryCode: "GBR"
+                ),
+                teamColor: .orange
+            )) {
+                // Asumsi ini nama komponen baris klasemen pembalapmu
+                FullStandingRow(pos: 1, name: "Lando NORRIS", sub: "McLaren", pts: "279", color: .orange)
             }
             .buttonStyle(PlainButtonStyle())
             
             Divider().background(Color.white.opacity(0.1))
             
-            NavigationLink(destination: DriverDetailView()) {
-                FullStandingRow(pos: 3, name: "Charles LECLERC", sub: "Ferrari", pts: "300", color: .red)
+            // LECLERC
+            NavigationLink(destination: DriverDetailView(
+                driver: Driver(
+                    driverNumber: 4,
+                    fullName: "Lando Norris",
+                    teamName: "McLaren",
+                    countryCode: "GBR"
+                ),
+                teamColor: .orange
+            )) {
+                // Asumsi ini nama komponen baris klasemen pembalapmu
+                FullStandingRow(pos: 1, name: "Lando NORRIS", sub: "McLaren", pts: "279", color: .orange)
             }
             .buttonStyle(PlainButtonStyle())
         }
@@ -71,37 +101,54 @@ struct DriversStandingsList: View {
         .cornerRadius(15)
     }
 }
-
 // MARK: - Daftar Konstruktor (Tim)
 struct ConstructorsStandingsList: View {
     var body: some View {
         VStack(spacing: 0) {
             // Pemanggilan TeamDetailView sekarang menggunakan format inisialisasi Constructor yang lengkap
             NavigationLink(destination: TeamDetailView(
-                team: Constructor(id: "mclaren", name: "McLaren", fullName: "McLaren F1 Team", themeColor: .orange, flag: "uk_flag", carImageName: "mclaren_car"),
-                drivers: [] // Array kosong sementara agar tidak error. Nantinya diisi dengan data Driver sungguhan.
+                team: Constructor(
+                    id: "mclaren",
+                    name: "McLaren",
+                    fullName: "McLaren F1 Team",
+                    themeColor: .orange,
+                    logoImageName: "mclaren", // Pastikan nama di Assets benar
+                    carImageName: "mclaren_car" // Pastikan nama di Assets benar
+                )
             )) {
-                FullStandingRow(pos: 1, name: "McLaren", sub: "Mercedes", pts: "568", color: .orange)
+                FullStandingRow(pos: 1, name: "McLaren", sub: "Mercedes", pts: "566", color: .orange)
             }
             .buttonStyle(PlainButtonStyle())
             
             Divider().background(Color.white.opacity(0.1))
             
             NavigationLink(destination: TeamDetailView(
-                team: Constructor(id: "redbull", name: "Red Bull Racing", fullName: "Oracle Red Bull Racing", themeColor: .blue, flag: "austria_flag", carImageName: "redbull_car"),
-                drivers: []
+                team: Constructor(
+                    id: "mclaren",
+                    name: "McLaren",
+                    fullName: "McLaren F1 Team",
+                    themeColor: .orange,
+                    logoImageName: "mclaren", // Pastikan nama di Assets benar
+                    carImageName: "mclaren_car" // Pastikan nama di Assets benar
+                )
             )) {
-                FullStandingRow(pos: 2, name: "Red Bull Racing", sub: "Honda RBPT", pts: "544", color: .blue)
+                FullStandingRow(pos: 1, name: "McLaren", sub: "Mercedes", pts: "566", color: .orange)
             }
             .buttonStyle(PlainButtonStyle())
             
             Divider().background(Color.white.opacity(0.1))
             
             NavigationLink(destination: TeamDetailView(
-                team: Constructor(id: "ferrari", name: "Ferrari", fullName: "Scuderia Ferrari", themeColor: .red, flag: "italy_flag", carImageName: "ferrari_car"),
-                drivers: []
+                team: Constructor(
+                    id: "mclaren",
+                    name: "McLaren",
+                    fullName: "McLaren F1 Team",
+                    themeColor: .orange,
+                    logoImageName: "mclaren", // Pastikan nama di Assets benar
+                    carImageName: "mclaren_car" // Pastikan nama di Assets benar
+                )
             )) {
-                FullStandingRow(pos: 3, name: "Ferrari", sub: "Ferrari", pts: "534", color: .red)
+                FullStandingRow(pos: 1, name: "McLaren", sub: "Mercedes", pts: "566", color: .orange)
             }
             .buttonStyle(PlainButtonStyle())
         }

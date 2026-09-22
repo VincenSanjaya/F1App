@@ -32,7 +32,7 @@ struct MainTabView: View {
                     Text("Standings")
                 }
         }
-        .accentColor(.red)
+        .tint(.red) // <-- Ubah di sini saja
         .preferredColorScheme(.dark)
     }
 }

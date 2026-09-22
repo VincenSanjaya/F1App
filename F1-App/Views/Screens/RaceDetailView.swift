@@ -1,3 +1,11 @@
+//
+//  RaceDetailView.swift
+//  F1-App
+//
+//  Created by Vincen Sanjaya on 22/09/26.
+//
+
+
 import SwiftUI
 
 struct RaceDetailView: View {
@@ -107,7 +115,7 @@ struct SessionRow: View {
                 countryName: "Bahrain",
                 grandPrixName: "Bahrain Grand Prix",
                 circuitName: "Bahrain International Circuit",
-                circuitImageName: "bahrain_circuit", // Ganti dengan nama file sirkuit di Assets
+                circuitImageName: "bahrain", // Ganti dengan nama file sirkuit di Assets
                 date: "29 Feb - 02 Mar"
             )
         )

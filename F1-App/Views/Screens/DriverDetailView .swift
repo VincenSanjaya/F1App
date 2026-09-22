@@ -1,55 +1,64 @@
 //
-//  DriverDetailView 2.swift
+//  DriverDetailView.swift
 //  F1-App
 //
 //  Created by Vincen Sanjaya on 17/09/26.
 //
 
-
 import SwiftUI
 
 struct DriverDetailView: View {
-    // Data statis sementara (Nanti akan diisi dari API)
-    let name: String = "Max Verstappen"
-    let number: String = "1"
-    let team: String = "Red Bull Racing"
-    let teamColor: Color = .blue
+    // Meminta data Driver dan Warna Tim dari halaman sebelumnya
+    let driver: Driver
+    let teamColor: Color
     
     var body: some View {
         ScrollView {
             VStack(spacing: 25) {
                 
-                // 1. HEADER (Nomor Latar & Foto)
+                // 1. HERO HEADER (Banner ala Web F1)
                 ZStack(alignment: .bottom) {
-                    Text(number)
-                        .font(.system(size: 150, weight: .black))
-                        .foregroundColor(teamColor.opacity(0.15))
-                        .offset(y: -20)
+                    // Background Tim
+                    teamColor
                     
-                    // Placeholder foto pembalap (Ganti dengan Image dari Assets nanti)
-                    Image(systemName: "person.crop.circle.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 150, height: 150)
-                        .foregroundColor(teamColor)
-                        .background(Circle().fill(Color(white: 0.15)))
-                        .shadow(radius: 10)
-                }
-                .frame(height: 200)
-                .padding(.top, 20)
-                
-                // 2. NAMA & TIM
-                VStack(spacing: 5) {
-                    Text(name)
-                        .font(.system(size: 32, weight: .black))
-                        .foregroundColor(.white)
+                    // Watermark Angka Raksasa di Kanan Bawah
+                    Text(driver.driverNumber != nil ? "\(driver.driverNumber!)" : "")
+                        .font(.system(size: 180, weight: .black))
+                        .foregroundColor(.white.opacity(0.15))
+                        .offset(x: 30, y: 40)
+                        .frame(maxWidth: .infinity, alignment: .bottomTrailing)
                     
-                    Text(team.uppercased())
-                        .font(.headline)
-                        .foregroundColor(teamColor)
+                    // Teks Nama & Tim di Kiri Bawah, Foto di Kanan
+                    HStack(alignment: .bottom) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(driver.fullName ?? "Unknown Driver")
+                                .font(.system(size: 28, weight: .black))
+                                .foregroundColor(.white)
+                                .lineLimit(2)
+                                .minimumScaleFactor(0.8)
+                            
+                            Text(driver.teamName?.uppercased() ?? "UNKNOWN TEAM")
+                                .font(.headline)
+                                .foregroundColor(.white.opacity(0.9))
+                        }
+                        .padding(.leading, 20)
+                        .padding(.bottom, 20)
+                        
+                        Spacer()
+                        
+                        // Gambar Pembalap (SEMENTARA pakai ikon. Nanti ganti dengan Image("nama_file_assets"))
+                        Image(systemName: "person.crop.square.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 200)
+                            .foregroundColor(.white.opacity(0.5))
+                            .padding(.trailing, 20)
+                    }
                 }
+                .frame(height: 280) // Tinggi banner
+                .clipped() // Potong elemen watermark yang keluar jalur
                 
-                // 3. STATISTIK KARIR UTAMA
+                // 2. STATISTIK KARIR UTAMA (Sementara Statis)
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 15) {
                     DriverStatBox(title: "World Championships", value: "3")
                     DriverStatBox(title: "Race Wins", value: "61")
@@ -58,7 +67,7 @@ struct DriverDetailView: View {
                 }
                 .padding(.horizontal)
                 
-                // 4. BIODATA PRIBADI
+                // 3. BIODATA PRIBADI (Dinamis dari model)
                 VStack(alignment: .leading, spacing: 15) {
                     Text("BIOGRAPHY")
                         .font(.headline)
@@ -66,11 +75,11 @@ struct DriverDetailView: View {
                         .padding(.horizontal)
                     
                     VStack(spacing: 0) {
-                        BioRow(title: "Country", value: "Netherlands 🇳🇱")
+                        BioRow(title: "Country", value: driver.countryCode ?? "-")
                         Divider().background(Color.white.opacity(0.1))
-                        BioRow(title: "Date of Birth", value: "30/09/1997")
+                        BioRow(title: "Driver Number", value: driver.driverNumber != nil ? "\(driver.driverNumber!)" : "-")
                         Divider().background(Color.white.opacity(0.1))
-                        BioRow(title: "Place of Birth", value: "Hasselt, Belgium")
+                        BioRow(title: "Acronym", value: driver.nameAcronym ?? "-")
                     }
                     .background(Color(white: 0.15))
                     .cornerRadius(15)
@@ -81,7 +90,7 @@ struct DriverDetailView: View {
             }
         }
         .background(Color(white: 0.1).ignoresSafeArea())
-        .navigationBarTitleDisplayMode(.inline)
+        .edgesIgnoringSafeArea(.top) // Membuat banner menabrak batas atas layar dengan keren
         .preferredColorScheme(.dark)
     }
 }
@@ -133,8 +142,19 @@ struct BioRow: View {
     }
 }
 
+// MARK: - PREVIEW
 #Preview {
     NavigationStack {
-        DriverDetailView()
+        // Data Dummy untuk Preview Canvas
+        DriverDetailView(
+            driver: Driver(
+                driverNumber: 1,
+                fullName: "Max Verstappen",
+                nameAcronym: "VER",
+                teamName: "Red Bull Racing",
+                countryCode: "NED"
+            ),
+            teamColor: .blue
+        )
     }
 }

@@ -9,61 +9,173 @@ import SwiftUI
 
 struct TeamDetailView: View {
     let team: Constructor
-    let drivers: [Driver]
     
     var body: some View {
         ScrollView {
-            VStack(spacing: 25) {
-                // 1. HEADER: Mobil Raksasa & Latar Belakang Gradien
-                ZStack(alignment: .bottom) {
-                    // Latar gradien dari atas ke bawah
-                    LinearGradient(
-                        colors: [team.themeColor.opacity(0.5), Color(white: 0.1)],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                    .frame(height: 250)
-                    
-                    // Logo tim besar sebagai Watermark di belakang mobil
-                    Image(team.imageName)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 300) // PERBESAR LOGO (dari 200 jadi 300)
-                        .opacity(0.8)   // NAIKKAN OPACITY (dari 0.15 jadi 0.8)
-                        .offset(y: -40)
-                    
-                    // Gambar Mobil
-                    Image(team.carImageName)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity)
-                        .padding(.horizontal, 10)
-                        .offset(y: 20) // Menurunkan mobil sedikit agar terasa keluar dari header
-                }
+            VStack(spacing: 0) {
                 
-                // 2. BAGIAN PEMBALAP
-                VStack(alignment: .leading, spacing: 20) {
-                    Text("CURRENT DRIVERS")
-                        .font(.headline)
-                        .fontWeight(.black)
-                        .italic()
-                        .foregroundColor(.gray)
-                        .padding(.horizontal, 25)
-                        .padding(.top, 20)
+                // ==========================================
+                // 1. HEADER / BANNER TIM
+                // ==========================================
+                ZStack {
+                    // Layer Bawah: Warna Tim
+                    (team.themeColor ?? Color.gray)
                     
-                    // Looping kartu pembalap yang sudah kita buat sebelumnya!
-                    VStack(spacing: 15) {
-                        ForEach(drivers) { driver in
-                            DriverCardView(driver: driver)
+                    // Layer Tengah: Watermark Logo Besar
+                    if let logo = team.logoImageName {
+                        Image(logo)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 350)
+                            .opacity(0.15)
+                            .offset(x: 100, y: 50)
+                    }
+                    
+                    // Layer Atas: Teks Info & Mobil
+                    VStack(alignment: .leading) {
+                        // Info Nama Tim
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text(team.name ?? "Unknown Team")
+                                .font(.system(size: 40, weight: .black))
+                                .foregroundColor(.white)
+                            
+                            Text(team.fullName ?? "-")
+                                .font(.headline)
+                                .foregroundColor(.white.opacity(0.8))
+                        }
+                        .padding(.top, 60)
+                        .padding(.leading, 20)
+                        
+                        Spacer()
+                        
+                        // Gambar Mobil F1 (Pastikan ada gambar mobil di Assets)
+                        if let car = team.carImageName {
+                            Image(car)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 100) // Sesuaikan jika mobil terlalu kecil/besar
+                                .padding(.horizontal, 10)
+                                .padding(.bottom, 20)
+                                .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 10)
+                        } else {
+                            // Placeholder jika belum ada gambar mobil
+                            Image(systemName: "car.side.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 80)
+                                .foregroundColor(.white.opacity(0.5))
+                                .padding(.bottom, 20)
+                                .padding(.leading, 20)
                         }
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                .frame(height: 280) // Tinggi banner
+                .clipped()
                 
-                Spacer(minLength: 40)
+                // ==========================================
+                // 2. STATISTIK & INFO TIM
+                // ==========================================
+                VStack(spacing: 25) {
+                    // KOTAK STATISTIK
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 15) {
+                        TeamStatBox(title: "Constructors' Titles", value: "8")
+                        TeamStatBox(title: "Drivers' Titles", value: "12")
+                        TeamStatBox(title: "Race Wins", value: "183")
+                        TeamStatBox(title: "Pole Positions", value: "156")
+                    }
+                    .padding(.horizontal)
+                    
+                    // INFO DASAR
+                    VStack(alignment: .leading, spacing: 15) {
+                        Text("TEAM INFO")
+                            .font(.headline)
+                            .foregroundColor(.gray)
+                            .padding(.horizontal)
+                        
+                        VStack(spacing: 0) {
+                            TeamBioRow(title: "Base", value: "Woking, UK")
+                            Divider().background(Color.white.opacity(0.1))
+                            TeamBioRow(title: "Team Chief", value: "Andrea Stella")
+                            Divider().background(Color.white.opacity(0.1))
+                            TeamBioRow(title: "Power Unit", value: "Mercedes")
+                        }
+                        .background(Color(white: 0.15))
+                        .cornerRadius(15)
+                        .padding(.horizontal)
+                    }
+                    
+                    Spacer(minLength: 40)
+                }
+                .padding(.top, 25)
             }
         }
         .background(Color(white: 0.1).ignoresSafeArea())
-        .navigationTitle(team.fullName)
         .navigationBarTitleDisplayMode(.inline)
+        .preferredColorScheme(.dark)
+        .ignoresSafeArea(edges: .top)
+    }
+}
+
+// MARK: - Komponen Kotak Statistik Tim
+struct TeamStatBox: View {
+    let title: String
+    let value: String
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
+                .font(.caption)
+                .foregroundColor(.gray)
+                .textCase(.uppercase)
+            
+            Text(value)
+                .font(.title2)
+                .fontWeight(.black)
+                .foregroundColor(.white)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .background(Color(white: 0.15))
+        .cornerRadius(12)
+    }
+}
+
+// MARK: - Komponen Baris Bio Tim
+struct TeamBioRow: View {
+    let title: String
+    let value: String
+    
+    var body: some View {
+        HStack {
+            Text(title)
+                .font(.subheadline)
+                .foregroundColor(.gray)
+            
+            Spacer()
+            
+            Text(value)
+                .font(.subheadline)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+        }
+        .padding(.vertical, 12)
+        .padding(.horizontal, 16)
+    }
+}
+
+// MARK: - PREVIEW
+#Preview {
+    NavigationStack {
+        TeamDetailView(
+            team: Constructor(
+                id: "mclaren",
+                name: "McLaren",
+                fullName: "McLaren F1 Team",
+                themeColor: .orange,
+                logoImageName: "mclaren", // Ganti sesuai nama logo di Assets
+                carImageName: "mclaren_car" // Ganti sesuai nama mobil di Assets
+            )
+        )
     }
 }

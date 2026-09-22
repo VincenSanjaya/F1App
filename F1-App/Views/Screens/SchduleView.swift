@@ -7,14 +7,19 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct ScheduleView: View {
+    // Data dinamis (Nanti bisa diganti dari API)
+    let races: [Race] = [
+        Race(roundNumber: 15, countryName: "🇺🇸 United States", grandPrixName: "United States Grand Prix", circuitName: "Circuit of The Americas", circuitImageName: "cota_circuit", date: "20-22\nOCT"),
+        Race(roundNumber: 16, countryName: "🇲🇽 Mexico", grandPrixName: "Mexico City Grand Prix", circuitName: "Autódromo Hermanos Rodríguez", circuitImageName: "mexico_circuit", date: "27-29\nOCT"),
+        Race(roundNumber: 17, countryName: "🇧🇷 Brazil", grandPrixName: "São Paulo Grand Prix", circuitName: "Autódromo José Carlos Pace", circuitImageName: "brazil_circuit", date: "03-05\nNOV"),
+        Race(roundNumber: 18, countryName: "🇺🇸 Las Vegas", grandPrixName: "Las Vegas Grand Prix", circuitName: "Las Vegas Strip Circuit", circuitImageName: "vegas_circuit", date: "16-18\nNOV")
+    ]
+    
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 15) {
-                    // Balapan Terdekat (Upcoming)
                     Text("UPCOMING RACES")
                         .font(.subheadline)
                         .fontWeight(.black)
@@ -23,61 +28,17 @@ struct ScheduleView: View {
                         .padding(.top, 10)
                         .padding(.horizontal)
                     
-                    // Round 15
-                    NavigationLink(destination: TrackDetailView()) {
-                        RaceCardView(
-                            round: "ROUND 15",
-                            date: "20-22\nOCT",
-                            flag: "🇺🇸",
-                            country: "United States",
-                            track: "Circuit of The Americas",
-                            isNextRace: true
-                        )
+                    // Looping data otomatis, tidak perlu hardcode satu-satu
+                    ForEach(Array(races.enumerated()), id: \.element.id) { index, race in
+                        // Cek apakah ini balapan pertama di list (untuk efek isNextRace)
+                        let isNext = index == 0
+                        
+                        NavigationLink(destination: RaceDetailView(race: race)) {
+                            RaceCardView(race: race, isNextRace: isNext)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .padding(.horizontal)
                     }
-                    .buttonStyle(PlainButtonStyle())
-                    .padding(.horizontal)
-                    
-                    // Sisa Balapan Musim Ini - Round 16
-                    NavigationLink(destination: TrackDetailView()) {
-                        RaceCardView(
-                            round: "ROUND 16",
-                            date: "27-29\nOCT",
-                            flag: "🇲🇽",
-                            country: "Mexico",
-                            track: "Autódromo Hermanos Rodríguez",
-                            isNextRace: false
-                        )
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    .padding(.horizontal)
-                    
-                    // Round 17
-                    NavigationLink(destination: TrackDetailView()) {
-                        RaceCardView(
-                            round: "ROUND 17",
-                            date: "03-05\nNOV",
-                            flag: "🇧🇷",
-                            country: "Brazil",
-                            track: "Autódromo José Carlos Pace",
-                            isNextRace: false
-                        )
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    .padding(.horizontal)
-                    
-                    // Round 18
-                    NavigationLink(destination: TrackDetailView()) {
-                        RaceCardView(
-                            round: "ROUND 18",
-                            date: "16-18\nNOV",
-                            flag: "🇺🇸",
-                            country: "Las Vegas",
-                            track: "Las Vegas Strip Circuit",
-                            isNextRace: false
-                        )
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    .padding(.horizontal)
                     
                     Spacer(minLength: 40)
                 }
@@ -89,23 +50,15 @@ struct ScheduleView: View {
     }
 }
 
-#Preview {
-    ScheduleView()
-}
-
-// MARK: - Komponen Kartu Balapan
+// MARK: - Komponen Kartu Balapan (Mempertahankan UI Asli Milikmu)
 struct RaceCardView: View {
-    let round: String
-    let date: String
-    let flag: String
-    let country: String
-    let track: String
-    let isNextRace: Bool // Penanda untuk memberikan efek khusus pada balapan selanjutnya
+    let race: Race
+    let isNextRace: Bool
     
     var body: some View {
         HStack(spacing: 15) {
             // Kolom Tanggal
-            Text(date)
+            Text(race.date)
                 .font(.headline)
                 .fontWeight(.black)
                 .multilineTextAlignment(.center)
@@ -119,20 +72,17 @@ struct RaceCardView: View {
             
             // Info Sirkuit
             VStack(alignment: .leading, spacing: 4) {
-                Text(round)
+                Text("ROUND \(race.roundNumber)")
                     .font(.caption2)
                     .fontWeight(.bold)
                     .foregroundColor(isNextRace ? .red : .gray)
                 
-                HStack(spacing: 6) {
-                    Text(flag)
-                    Text(country)
-                        .font(.headline)
-                        .fontWeight(.black)
-                        .foregroundColor(.white)
-                }
+                Text(race.countryName)
+                    .font(.headline)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
                 
-                Text(track)
+                Text(race.circuitName)
                     .font(.caption)
                     .foregroundColor(.gray)
                     .lineLimit(1)

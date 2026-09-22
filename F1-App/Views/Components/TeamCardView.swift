@@ -9,19 +9,20 @@ import SwiftUI
 
 struct TeamCardView: View {
     let team: Constructor
-    // Kartu ini butuh array pembalap agar bisa menampilkan 2 nama di bawah nama tim
     let drivers: [Driver]
     
     var body: some View {
+        let safeColor = team.themeColor ?? Color.gray
+        
         ZStack {
             // 1. Latar Belakang Gradien Warna Tim
             LinearGradient(
-                colors: [team.themeColor, team.themeColor.opacity(0.6), Color(white: 0.15)],
+                colors: [safeColor, safeColor.opacity(0.6), Color(white: 0.15)],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
             .cornerRadius(15)
-            .shadow(color: team.themeColor.opacity(0.4), radius: 10, x: 0, y: 6)
+            .shadow(color: safeColor.opacity(0.4), radius: 10, x: 0, y: 6)
             
             // Garis tepi tipis
             RoundedRectangle(cornerRadius: 15)
@@ -30,7 +31,7 @@ struct TeamCardView: View {
             VStack(alignment: .leading) {
                 // SISI ATAS: Nama Tim & Logo
                 HStack(alignment: .top) {
-                    Text(team.name)
+                    Text(team.name ?? "Unknown Team")
                         .font(.system(size: 28, weight: .black))
                         .italic()
                         .foregroundColor(.white)
@@ -38,16 +39,17 @@ struct TeamCardView: View {
                     Spacer()
                     
                     // Logo tim transparan sebagai watermark di kanan atas
-                    Image(team.id) // Pastikan nama id sama dengan logo versi penuh di folder Assets
+                    // PERBAIKAN 1: Tambahkan ?? "" agar Xcode tidak protes soal tipe data Optional
+                    Image(team.id)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 100, height: 100) // Perbesar gambar aslinya
-                        .opacity(0.7) // Opacity dinaikkan
-                        .frame(width: 30, height: 30, alignment: .topTrailing) // Trik menahan ruang layout agar teks tidak ikut turun
-                        .offset(x: 10, y: -5) // Geser posisinya agar pas di sudut
+                        .frame(width: 100, height: 100)
+                        .opacity(0.7)
+                        .frame(width: 30, height: 30, alignment: .topTrailing)
+                        .offset(x: 10, y: -5)
                 }
                 
-                // DERETAN PEMBALAP (Foto kecil bulat dari API + Nama)
+                // DERETAN PEMBALAP
                 HStack(spacing: 20) {
                     ForEach(drivers) { driver in
                         HStack(spacing: 6) {
@@ -62,7 +64,7 @@ struct TeamCardView: View {
                                     }
                                 }
                                 .frame(width: 25, height: 25)
-                                .background(Color.white.opacity(0.2)) // Backing kalau fotonya lama load
+                                .background(Color.white.opacity(0.2))
                                 .clipShape(Circle())
                             }
                             
@@ -79,11 +81,11 @@ struct TeamCardView: View {
             }
             .padding(20)
             
-            // 2. MOBIL RAKSASA MELINTANG DI TENGAH
+            // 2. MOBIL RAKSASA
             GeometryReader { geometry in
-                let carWidth = geometry.size.width * 0.9 // Ukuran diperkecil jadi 90% dari lebar kartu
+                let carWidth = geometry.size.width * 0.9
                 
-                Image(team.carImageName)
+                Image(team.carImageName ?? "")
                     .resizable()
                     .scaledToFit()
                     .frame(width: carWidth)
@@ -93,8 +95,8 @@ struct TeamCardView: View {
                     )
             }
         }
-        .frame(height: 200) // (Sesuaikan dengan tinggi aslimu, misalnya 180 atau 200)
-        .clipShape(RoundedRectangle(cornerRadius: 20)) // Potong semua yang keluar batas dengan lengkungan 20
+        .frame(height: 200)
+        .clipShape(RoundedRectangle(cornerRadius: 20))
         .padding(.horizontal, 20)
     }
 }
@@ -104,14 +106,14 @@ struct TeamCardView: View {
     ZStack {
         Color.black.ignoresSafeArea()
         
-        // Data Dummy untuk Preview
         let dummyTeam = Constructor(
             id: "mclaren",
             name: "McLaren",
             fullName: "McLaren F1 Team",
             themeColor: Color(hex: "FF8000"),
-            flag: "🇬🇧",
-            carImageName: "mclaren_car" // Pastikan kamu punya gambar bernama "mclaren_car" di Assets
+            // PERBAIKAN 2: carImageName ditaruh SEBELUM flag
+            carImageName: "mclaren_car",
+            flag: "🇬🇧"
         )
         
         let dummyDrivers = [

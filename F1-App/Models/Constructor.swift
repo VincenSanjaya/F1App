@@ -5,19 +5,33 @@
 //  Created by Vincen Sanjaya on 14/09/26.
 //
 
+import Foundation
 import SwiftUI
 
 struct Constructor: Identifiable {
-    let id: String
-    let name: String
-    let fullName: String
-    let themeColor: Color
-    let flag: String
-    let carImageName: String
-    // MARK: - Mapping Otomatis Logo Tim
-    var imageName: String {
-            return id
-        }
+    var id: String
+    var name: String?
+    var fullName: String?
+    var themeColor: Color?
+    var logoImageName: String?
+    var carImageName: String?
+    var flag: String?
     
+    // Init super fleksibel dengan nilai default
+    init(id: String = UUID().uuidString,
+         name: String? = nil,
+         fullName: String? = nil,
+         themeColor: Color? = .gray,
+         logoImageName: String? = nil,
+         carImageName: String? = nil,
+         flag: String? = nil) {
+        
+        self.id = id
+        self.name = name
+        self.fullName = fullName
+        self.themeColor = themeColor
+        self.logoImageName = logoImageName
+        self.carImageName = carImageName
+        self.flag = flag
+    }
 }
-
