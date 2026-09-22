@@ -16,7 +16,7 @@ struct ContentView: View {
         if hasSelectedTeam {
             MainTabView() // Jika sudah, langsung masuk ke dalam aplikasi
         } else {
-            OnboardingView() // Jika belum, tampilkan halaman pilih tim
+            TeamsView() // Jika belum, tampilkan halaman pilih tim
         }
     }
 }

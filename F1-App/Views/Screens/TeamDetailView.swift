@@ -9,6 +9,12 @@ import SwiftUI
 
 struct TeamDetailView: View {
     let team: Constructor
+    let drivers: [Driver]
+    
+    init(team: Constructor, drivers: [Driver] = []) {
+        self.team = team
+        self.drivers = drivers
+    }
     
     var body: some View {
         ScrollView {

@@ -31,6 +31,13 @@ struct MainTabView: View {
                     Image(systemName: "trophy.fill")
                     Text("Standings")
                 }
+            
+            // Tab 4: Teams
+            TeamsView()
+                .tabItem {
+                    Image(systemName: "person.3.fill")
+                    Text("Teams")
+                }
         }
         .tint(.red) // <-- Ubah di sini saja
         .preferredColorScheme(.dark)
